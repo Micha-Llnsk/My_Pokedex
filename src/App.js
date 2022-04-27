@@ -1,5 +1,5 @@
 import "./App.css";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import PokemonListPage from "./pages/PokemonListPage";
 import SinglePokemonPage from "./pages/SinglePokemonPage";
 
