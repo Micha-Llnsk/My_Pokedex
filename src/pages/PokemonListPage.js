@@ -26,7 +26,7 @@ export default function PokemonListPage() {
       });
     }
     
-    function loadMoreCharactersOnClick() {
+    function loadMoreCharacters() {
       const urlPage = `https://pokeapi.co/api/v2/pokemon/?offset=${page}`;
       fetch(urlPage)
         .then((res) => res.json())
@@ -42,7 +42,7 @@ return (
       <ul className="listContainer">{renderPokemons()}</ul>
         <button 
           className="loadButton"
-          onClick={() => loadMoreCharactersOnClick()} 
+          onClick={loadMoreCharacters} 
         >Load More
         </button>
     </div>

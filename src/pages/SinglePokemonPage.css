@@ -52,3 +52,48 @@ h2 {
     height: auto;
     width: 50%;
 }
+
+.moveButtons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.backButton {
+    height: 50px;
+    width: 150px;
+    background: darkblue;
+    border: 1px solid darkblue;
+    border-radius: 8px;
+    color: yellow;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0px auto;
+}
+
+.backButton:hover {
+    opacity: 0.7;
+}
+
+.backButton:active {
+    color: blue;
+    background: yellow;
+    border: 1px solid yellow;
+}
+
+:disabled {
+    background-color: black;
+    border-style: none;
+    cursor: not-allowed;
+}
+
+:disabled:hover {
+    opacity: unset;
+}
+
+:disabled:active {
+    color: blue;
+    background: black;
+    border: 1px solid black;
+}
