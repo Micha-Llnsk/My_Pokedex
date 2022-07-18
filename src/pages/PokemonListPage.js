@@ -5,37 +5,61 @@ import "./PokemonListPage.css"
 export default function PokemonListPage() {
   const [pokemons, setPokemons] = useState([]);
   const [page, setPage] = useState(20);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const url = "https://pokeapi.co/api/v2/pokemon";
-    fetch(url)
+    setIsLoading(true);
+    fetch("https://pokeapi.co/api/v2/pokemon")
     .then((res) => res.json())
     .then((data) => {
-      setPokemons(data.results);
+      return Promise.all(
+        data.results.map((url) => {
+          return fetch(`${url.url}`)
+          .then((res) => res.json());
+        })
+      )
+      .then((data) => {
+        setPokemons(data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     });
   }, []);
 
   function renderPokemons() {
+    if (isLoading || pokemons === null) {
+      return "Loading...";
+    }
+
     return pokemons.map((pokemon, index) => {
-    const id = index + 1;
       return (
         <li key={pokemon.name}>
-          <Link className="listItem" to={`/pokemon/${id}`}>{pokemon.name}</Link>
+          <Link className="listItem" to={`/pokemon/${pokemon.id}`}>
+            <img className="pokeListArt" src={pokemon.sprites?.other["official-artwork"]?.front_default} alt={`${pokemon.name}`} />
+            </Link>
         </li>
       );
       });
     }
-    
+
     function loadMoreCharacters() {
-      const urlPage = `https://pokeapi.co/api/v2/pokemon/?offset=${page}`;
-      fetch(urlPage)
+      fetch(`https://pokeapi.co/api/v2/pokemon/?offset=${page}`)
         .then((res) => res.json())
         .then((data) => {
-          const morePokemons = [...pokemons, ...data.results];
-          setPokemons(morePokemons);
-      });
-      return setPage(page + 20);
-    }
+          return Promise.all(
+            data.results.map((url) => {
+              return fetch(`${url.url}`)
+              .then((res) => res.json());
+            })
+          )})      
+          .then((data) => {
+            const morePokemons = [...pokemons, ...data];
+            setPokemons(morePokemons);
+        })
+        return setPage(page + 20);
+    };
 
 return (
     <div className="listWrapper">
